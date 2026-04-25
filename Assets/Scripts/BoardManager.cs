@@ -7,7 +7,7 @@ public class BoardManager : MonoBehaviour
    public class CellData
    {
        public bool Passable;
-       public GameObject ContainedObject;
+       public CellObject ContainedObject;
    }
 
    private CellData[,] m_BoardData;
@@ -19,7 +19,8 @@ public class BoardManager : MonoBehaviour
    public int Height;
    public Tile[] GroundTiles;
    public Tile[] WallTiles;
-   public GameObject FoodPrefab;
+   public FoodObject FoodPrefab;
+   public FoodObject MeetFoodPrefab;
   
    public void Init()
    {
@@ -72,19 +73,41 @@ public class BoardManager : MonoBehaviour
 
        return m_BoardData[cellIndex.x, cellIndex.y];
    }
-  void GenerateFood()
+   void GenerateFood()
     {
-    int foodCount = 5;
-    for (int i = 0; i < foodCount; ++i)
-    {
-        int randomIndex = Random.Range(0, m_EmptyCellsList.Count);
-        Vector2Int coord = m_EmptyCellsList[randomIndex];
-        
-        m_EmptyCellsList.RemoveAt(randomIndex);
-        CellData data = m_BoardData[coord.x, coord.y];
-        GameObject newFood = Instantiate(FoodPrefab);
-        newFood.transform.position = CellToWorld(coord);
-        data.ContainedObject = newFood;
+       int foodCount = 5;
+       for (int i = 0; i < foodCount; ++i)
+       {
+           int randomIndex = Random.Range(0, m_EmptyCellsList.Count);
+           Vector2Int coord = m_EmptyCellsList[randomIndex];
+
+           m_EmptyCellsList.RemoveAt(randomIndex);
+           CellData data = m_BoardData[coord.x, coord.y];
+
+           FoodObject foodPrefab = GetRandomFoodPrefab();
+           if (foodPrefab == null)
+           {
+               return;
+           }
+
+           FoodObject newFood = Instantiate(foodPrefab);
+           newFood.transform.position = CellToWorld(coord);
+           data.ContainedObject = newFood;
+       }
     }
-    }
+
+   FoodObject GetRandomFoodPrefab()
+   {
+       if (FoodPrefab != null && MeetFoodPrefab != null)
+       {
+           return Random.Range(0, 2) == 0 ? FoodPrefab : MeetFoodPrefab;
+       }
+
+       if (FoodPrefab != null)
+       {
+           return FoodPrefab;
+       }
+
+       return MeetFoodPrefab;
+   }
 }
