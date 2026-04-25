@@ -45,3 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallObject
   ObstacleTile: {fileID: 11400000, guid: ec312ddd5af464e1c987ba0fafc16161, type: 2}
+  DamageTiles:
+  - {fileID: 11400000, guid: ec312ddd5af464e1c987ba0fafc16161, type: 2}
+  - {fileID: 11400000, guid: 76b237211940e45dfa4ed5dce664325b, type: 2}
+  - {fileID: 11400000, guid: 16c511b856646439f929cc50f881e5ff, type: 2}
+  MaxHealth: 10
+  DamagePerHit: 1

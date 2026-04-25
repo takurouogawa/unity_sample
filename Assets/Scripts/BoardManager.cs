@@ -23,6 +23,8 @@ public class BoardManager : MonoBehaviour
    public FoodObject FoodPrefab;
    public FoodObject MeetFoodPrefab;
    public WallObject WallPrefab;
+   public int MinWallCount = 6;
+   public int MaxWallCount = 10;
 
    public void SetCellTile(Vector2Int cellIndex, Tile tile)
     {
@@ -147,7 +149,11 @@ public class BoardManager : MonoBehaviour
 
   void GenerateWall()
     {
-    int wallCount = Random.Range(6, 10);
+    int minWallCount = Mathf.Min(MinWallCount, MaxWallCount);
+    int maxWallCount = Mathf.Max(MinWallCount, MaxWallCount);
+    int wallCount = Random.Range(minWallCount, maxWallCount + 1);
+    wallCount = Mathf.Min(wallCount, m_EmptyCellsList.Count);
+
     for (int i = 0; i < wallCount; ++i)
     {
         int randomIndex = Random.Range(0, m_EmptyCellsList.Count);
