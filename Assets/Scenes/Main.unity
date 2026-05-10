@@ -519,6 +519,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f4d52f833906f4ce6a5c116734b8d0b5, type: 2}
   WallTiles:
   - {fileID: 11400000, guid: 52becd1f45e0a4519a3a97dff8f7e37b, type: 2}
+  FoodPrefab: {fileID: 6139684251272734117, guid: 5c2dc5bb4e3f449e395d1dcad8746410, type: 3}
+  MeetFoodPrefab: {fileID: 4626563283740618634, guid: c2207185b2a25402683b0a0e5f727346, type: 3}
+  WallPrefab: {fileID: 4825758557267324025, guid: fea63c2a2f44c47d8ab5c7c181d13cd3, type: 3}
+  MinWallCount: 6
+  MaxWallCount: 10
+  ExitCellPrefab: {fileID: 8283629596580421848, guid: b84cfeda9c06541bb978644e06ba3546, type: 3}
 --- !u!1 &2107769332
 GameObject:
   m_ObjectHideFlags: 0

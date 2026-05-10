@@ -25,6 +25,8 @@ public class BoardManager : MonoBehaviour
    public WallObject WallPrefab;
    public int MinWallCount = 6;
    public int MaxWallCount = 10;
+   public ExitCellObject ExitCellPrefab;
+
 
    public void SetCellTile(Vector2Int cellIndex, Tile tile)
     {
@@ -84,6 +86,12 @@ public class BoardManager : MonoBehaviour
            }
        }
        m_EmptyCellsList.Remove(new Vector2Int(1, 1));
+
+       Vector2Int endCoord = new Vector2Int(Width - 2, Height - 2);
+       AddObject(Instantiate(ExitCellPrefab), endCoord);
+       m_EmptyCellsList.Remove(endCoord);
+
+
        GenerateWall();
        GenerateFood();
    }
@@ -103,6 +111,32 @@ public class BoardManager : MonoBehaviour
 
        return m_BoardData[cellIndex.x, cellIndex.y];
    }
+
+   public void Clean()
+    {
+        //no board data, so exit early, nothing to clean
+    if(m_BoardData == null)
+        return;
+
+    for (int y = 0; y < Height; ++y)
+    {
+        for (int x = 0; x < Width; ++x)
+        {
+            var cellData = m_BoardData[x, y];
+
+            if (cellData.ContainedObject != null)
+            {
+                //CAREFUL! Destroy the GameObject NOT just cellData.ContainedObject
+                //Otherwise what you are destroying is the JUST CellObject COMPONENT
+                //and not the whole gameobject with sprite
+                Destroy(cellData.ContainedObject.gameObject);
+            }
+
+            SetCellTile(new Vector2Int(x,y), null);
+        }
+    }
+    }
+
    void AddObject(CellObject obj, Vector2Int coord)
         {
         CellData data = m_BoardData[coord.x, coord.y];
