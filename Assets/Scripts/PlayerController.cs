@@ -6,17 +6,47 @@ public class PlayerController : MonoBehaviour
    private BoardManager m_Board;
    private Vector2Int m_CellPosition;
    private bool m_IsGameOver;
+   private bool m_IsMoving;
+   private Vector3 m_MoveTarget;
+   private CellObject m_PendingEnteredObject;
+
+   [SerializeField]
+   private float MoveSpeed = 4f;
 
    public void Spawn(BoardManager boardManager, Vector2Int cell)
    {
        m_Board = boardManager;
-       MoveTo(cell);
+       MoveTo(cell, true);
    }
   
-   public void MoveTo(Vector2Int cell)
+   public void MoveTo(Vector2Int cell, bool immediate = false)
    {
-       m_CellPosition = cell;
-       transform.position = m_Board.CellToWorld(m_CellPosition);
+        m_CellPosition = cell;
+
+        if (immediate)
+        {
+            m_IsMoving = false;
+            m_PendingEnteredObject = null;
+            transform.position = m_Board.CellToWorld(m_CellPosition);
+        }
+        else
+        {
+            m_IsMoving = true;
+            m_MoveTarget = m_Board.CellToWorld(m_CellPosition);
+        }
+        
+        if (m_Animator != null)
+        {
+            m_Animator.SetBool("Moving", m_IsMoving);
+        }
+   }
+
+   private void PlayAttackAnimation()
+   {
+       if (m_Animator != null)
+       {
+           m_Animator.SetTrigger("Attack");
+       }
    }
 
    public void GameOver()
@@ -28,6 +58,13 @@ public class PlayerController : MonoBehaviour
     m_IsGameOver = false;
     }
 
+    private Animator m_Animator;
+
+    private void Awake()
+    {
+       m_Animator = GetComponent<Animator>();
+    }
+
   
    private void Update()
    { 
@@ -36,9 +73,34 @@ public class PlayerController : MonoBehaviour
             if (Keyboard.current.enterKey.wasPressedThisFrame)
             {
                 GameManager.Instance.StartNewGame();
-            }
-            return;
-        }
+           }
+           return;
+       }
+
+       if (m_IsMoving)
+       {
+           transform.position = Vector3.MoveTowards(transform.position, m_MoveTarget, MoveSpeed * Time.deltaTime);
+          
+           if (transform.position == m_MoveTarget)
+           {
+               m_IsMoving = false;
+
+               if (m_Animator != null)
+               {
+                   m_Animator.SetBool("Moving", false);
+               }
+
+               if (m_PendingEnteredObject != null)
+               {
+                   CellObject enteredObject = m_PendingEnteredObject;
+                   m_PendingEnteredObject = null;
+                   enteredObject.PlayerEntered();
+               }
+           }
+
+           return;
+       }
+
        Vector2Int newCellTarget = m_CellPosition;
        bool hasMoved = false;
 
@@ -77,13 +139,17 @@ public class PlayerController : MonoBehaviour
                 }
                 else if(cellData.ContainedObject.PlayerWantsToEnter())
                 {
+                    m_PendingEnteredObject = cellData.ContainedObject;
                     MoveTo(newCellTarget);
-                    //Call PlayerEntered AFTER moving the player! Otherwise not in cell yet
-                    cellData.ContainedObject.PlayerEntered();
                 }
-                else if (cellData.ContainedObject.PlayerBumped())
+                else
                 {
-                    MoveTo(newCellTarget);
+                    PlayAttackAnimation();
+                    if (cellData.ContainedObject.PlayerBumped())
+                    {
+                        m_PendingEnteredObject = null;
+                        MoveTo(newCellTarget);
+                    }
                 }
            }
        }
