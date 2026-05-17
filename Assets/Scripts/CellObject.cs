@@ -5,7 +5,14 @@ public class CellObject : MonoBehaviour
    protected Vector2Int m_Cell;
    protected BoardManager m_Board;
 
+   public Vector2Int Cell => m_Cell;
+
    public virtual void Init(Vector2Int cell)
+   {
+       m_Cell = cell;
+   }
+
+   public void SetCell(Vector2Int cell)
    {
        m_Cell = cell;
    }

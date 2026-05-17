@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57028ced23934fac9e55c355419dc7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  MoveSpeed: 4
 --- !u!212 &1130744685
 SpriteRenderer:
   serializedVersion: 2
@@ -475,6 +476,71 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1001 &1673239406
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3456197834953947074, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_Name
+      value: Scavenger
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.5412707
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.4975653
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6642624837221907768, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -44283922, guid: 2315cc0495cb2054ea5dd392c1cff51e, type: 3}
+    - target: {fileID: 6642624837221907768, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
 --- !u!1 &2094836681
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,6 +611,7 @@ MonoBehaviour:
   FoodPrefab: {fileID: 6139684251272734117, guid: 5c2dc5bb4e3f449e395d1dcad8746410, type: 3}
   MeetFoodPrefab: {fileID: 4626563283740618634, guid: c2207185b2a25402683b0a0e5f727346, type: 3}
   WallPrefab: {fileID: 4825758557267324025, guid: fea63c2a2f44c47d8ab5c7c181d13cd3, type: 3}
+  ScavengerPrefab: {fileID: 694887090841252801, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
   MinWallCount: 6
   MaxWallCount: 10
   ExitCellPrefab: {fileID: 8283629596580421848, guid: b84cfeda9c06541bb978644e06ba3546, type: 3}
@@ -694,3 +761,4 @@ SceneRoots:
   - {fileID: 1130744686}
   - {fileID: 1422421045}
   - {fileID: 177980223}
+  - {fileID: 1673239406}

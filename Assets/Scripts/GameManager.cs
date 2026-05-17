@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
    void OnTurnHappen()
     {
         ChangeFood(-1);
+        BoardManager.MoveEnemiesTowardsPlayer(PlayerController.CellPosition);
     }
    public void ChangeFood(int amount)
     {

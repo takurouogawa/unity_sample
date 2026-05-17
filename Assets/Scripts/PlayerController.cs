@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
        m_Board = boardManager;
        MoveTo(cell, true);
    }
+
+   public Vector2Int CellPosition => m_CellPosition;
   
    public void MoveTo(Vector2Int cell, bool immediate = false)
    {
@@ -68,6 +70,11 @@ public class PlayerController : MonoBehaviour
   
    private void Update()
    { 
+       if (m_Board == null)
+       {
+           return;
+       }
+
        if (m_IsGameOver)
         {
             if (Keyboard.current.enterKey.wasPressedThisFrame)
@@ -131,7 +138,10 @@ public class PlayerController : MonoBehaviour
 
            if(cellData != null && cellData.Passable)
            {
-                GameManager.Instance.TurnManager.Tick();
+                if (GameManager.Instance != null && GameManager.Instance.TurnManager != null)
+                {
+                    GameManager.Instance.TurnManager.Tick();
+                }
 
                 if (cellData.ContainedObject == null)
                 {
