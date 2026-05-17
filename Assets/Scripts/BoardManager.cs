@@ -16,9 +16,14 @@ public class BoardManager : MonoBehaviour
    private Grid m_Grid;
    private List<Vector2Int> m_EmptyCellsList;
    private List<EnemyContoroller> m_Enemies;
+   private int m_BaseWidth;
+   private int m_BaseHeight;
   
    public int Width;
    public int Height;
+   public int LevelSizeIncrease = 2;
+   public int MaxBoardWidth = 30;
+   public int MaxBoardHeight = 30;
    public Tile[] GroundTiles;
    public Tile[] WallTiles;
    public FoodObject FoodPrefab;
@@ -28,6 +33,19 @@ public class BoardManager : MonoBehaviour
    public int MinWallCount = 6;
    public int MaxWallCount = 10;
    public ExitCellObject ExitCellPrefab;
+
+   private void Awake()
+   {
+       m_BaseWidth = Width;
+       m_BaseHeight = Height;
+   }
+
+   public void ConfigureForLevel(int level)
+   {
+       int levelOffset = Mathf.Max(0, level - 1);
+       Width = Mathf.Min(MaxBoardWidth, m_BaseWidth + levelOffset * LevelSizeIncrease);
+       Height = Mathf.Min(MaxBoardHeight, m_BaseHeight + levelOffset * LevelSizeIncrease);
+   }
 
 
    public void SetCellTile(Vector2Int cellIndex, Tile tile)
@@ -116,6 +134,82 @@ public class BoardManager : MonoBehaviour
    public Vector3 CellToWorld(Vector2Int cellIndex)
    {
        return m_Grid.GetCellCenterWorld((Vector3Int)cellIndex);
+   }
+
+   public Vector3 GetBoardCenterWorld()
+   {
+       if (Width <= 0 || Height <= 0)
+       {
+           return Vector3.zero;
+       }
+
+       Vector3 minCellCenter = CellToWorld(new Vector2Int(0, 0));
+       Vector3 maxCellCenter = CellToWorld(new Vector2Int(Width - 1, Height - 1));
+       return (minCellCenter + maxCellCenter) * 0.5f;
+   }
+
+   public float GetRequiredOrthographicSize(float aspect, float padding = 1f)
+   {
+       if (aspect <= 0f)
+       {
+           aspect = 1f;
+       }
+
+       float cellWidth = m_Grid != null ? Mathf.Abs(m_Grid.cellSize.x) : 1f;
+       float cellHeight = m_Grid != null ? Mathf.Abs(m_Grid.cellSize.y) : 1f;
+
+       float halfBoardHeight = Height * cellHeight * 0.5f;
+       float halfBoardWidth = Width * cellWidth * 0.5f;
+       float sizeToFitHeight = halfBoardHeight;
+       float sizeToFitWidth = halfBoardWidth / aspect;
+
+       return Mathf.Max(sizeToFitHeight, sizeToFitWidth) + padding;
+   }
+
+   public Vector3 ClampCameraPosition(Vector3 desiredPosition, float orthographicSize, float aspect, float padding = 0f)
+   {
+       if (m_Grid == null || Width <= 0 || Height <= 0)
+       {
+           return desiredPosition;
+       }
+
+       float cellWidth = Mathf.Abs(m_Grid.cellSize.x);
+       float cellHeight = Mathf.Abs(m_Grid.cellSize.y);
+       Vector3 minCellCenter = CellToWorld(new Vector2Int(0, 0));
+       Vector3 maxCellCenter = CellToWorld(new Vector2Int(Width - 1, Height - 1));
+       float boardMinX = minCellCenter.x - cellWidth * 0.5f;
+       float boardMaxX = maxCellCenter.x + cellWidth * 0.5f;
+       float boardMinY = minCellCenter.y - cellHeight * 0.5f;
+       float boardMaxY = maxCellCenter.y + cellHeight * 0.5f;
+       float boardWidth = boardMaxX - boardMinX;
+       float boardHeight = boardMaxY - boardMinY;
+       float halfViewWidth = orthographicSize * aspect;
+       float halfViewHeight = orthographicSize;
+
+       float minX = boardMinX + padding + halfViewWidth;
+       float maxX = boardMaxX - padding - halfViewWidth;
+       float minY = boardMinY + padding + halfViewHeight;
+       float maxY = boardMaxY - padding - halfViewHeight;
+
+       if (minX > maxX)
+       {
+           desiredPosition.x = boardMinX + boardWidth * 0.5f;
+       }
+       else
+       {
+           desiredPosition.x = Mathf.Clamp(desiredPosition.x, minX, maxX);
+       }
+
+       if (minY > maxY)
+       {
+           desiredPosition.y = boardMinY + boardHeight * 0.5f;
+       }
+       else
+       {
+           desiredPosition.y = Mathf.Clamp(desiredPosition.y, minY, maxY);
+       }
+
+       return desiredPosition;
    }
 
    public CellData GetCellData(Vector2Int cellIndex)

@@ -55,10 +55,46 @@ public class PlayerController : MonoBehaviour
     {
     m_IsGameOver = true;
     }
-    public void Init()
+   public void Init()
     {
     m_IsGameOver = false;
     }
+
+   private bool TryGetMoveDelta(out Vector2Int moveDelta)
+   {
+       moveDelta = Vector2Int.zero;
+
+       if (Keyboard.current == null)
+       {
+           return false;
+       }
+
+       if (Keyboard.current.upArrowKey.wasPressedThisFrame || Keyboard.current.wKey.wasPressedThisFrame)
+       {
+           moveDelta = Vector2Int.up;
+           return true;
+       }
+
+       if (Keyboard.current.downArrowKey.wasPressedThisFrame || Keyboard.current.sKey.wasPressedThisFrame)
+       {
+           moveDelta = Vector2Int.down;
+           return true;
+       }
+
+       if (Keyboard.current.rightArrowKey.wasPressedThisFrame || Keyboard.current.dKey.wasPressedThisFrame)
+       {
+           moveDelta = Vector2Int.right;
+           return true;
+       }
+
+       if (Keyboard.current.leftArrowKey.wasPressedThisFrame || Keyboard.current.aKey.wasPressedThisFrame)
+       {
+           moveDelta = Vector2Int.left;
+           return true;
+       }
+
+       return false;
+   }
 
     private Animator m_Animator;
 
@@ -77,10 +113,16 @@ public class PlayerController : MonoBehaviour
 
        if (m_IsGameOver)
         {
-            if (Keyboard.current.enterKey.wasPressedThisFrame)
+            if (Keyboard.current != null && (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.rKey.wasPressedThisFrame))
             {
                 GameManager.Instance.StartNewGame();
            }
+
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                Application.Quit();
+            }
+
            return;
        }
 
@@ -109,28 +151,8 @@ public class PlayerController : MonoBehaviour
        }
 
        Vector2Int newCellTarget = m_CellPosition;
-       bool hasMoved = false;
-
-       if(Keyboard.current.upArrowKey.wasPressedThisFrame)
-       {
-           newCellTarget.y += 1;
-           hasMoved = true;
-       }
-       else if(Keyboard.current.downArrowKey.wasPressedThisFrame)
-       {
-           newCellTarget.y -= 1;
-           hasMoved = true;
-       }
-       else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
-       {
-           newCellTarget.x += 1;
-           hasMoved = true;
-       }
-       else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
-       {
-           newCellTarget.x -= 1;
-           hasMoved = true;
-       }
+       bool hasMoved = TryGetMoveDelta(out Vector2Int moveDelta);
+       newCellTarget += moveDelta;
 
        if(hasMoved)
        {

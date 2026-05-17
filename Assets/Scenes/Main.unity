@@ -476,71 +476,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1001 &1673239406
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3456197834953947074, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_Name
-      value: Scavenger
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 6.5412707
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.4975653
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6023443605875436302, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6642624837221907768, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -44283922, guid: 2315cc0495cb2054ea5dd392c1cff51e, type: 3}
-    - target: {fileID: 6642624837221907768, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6ecbb0f4d8a7748a2b9bc013684e9c5b, type: 3}
 --- !u!1 &2094836681
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,8 +534,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c19cf6a96c23471cbaa1d0211d8af6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardManager
-  Width: 8
-  Height: 8
+  Width: 16
+  Height: 16
+  LevelSizeIncrease: 2
+  MaxBoardWidth: 30
+  MaxBoardHeight: 30
   GroundTiles:
   - {fileID: 11400000, guid: 52becd1f45e0a4519a3a97dff8f7e37b, type: 2}
   - {fileID: 11400000, guid: 7cce45c5516a04ee38a67c82bc43f0a4, type: 2}
@@ -627,6 +565,7 @@ GameObject:
   - component: {fileID: 2107769334}
   - component: {fileID: 2107769333}
   - component: {fileID: 2107769336}
+  - component: {fileID: 2107769337}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -752,6 +691,22 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &2107769337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107769332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e1e9d7b0c9491e9d6f2a5c7c4b3a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraBoardFollower
+  Padding: 1
+  FitBoardToView: 1
+  FollowSmoothTime: 0.15
+  DeadZone: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -761,4 +716,3 @@ SceneRoots:
   - {fileID: 1130744686}
   - {fileID: 1422421045}
   - {fileID: 177980223}
-  - {fileID: 1673239406}
